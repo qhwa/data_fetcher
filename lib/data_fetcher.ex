@@ -86,15 +86,12 @@ defmodule DataFetcher do
       end
 
       defp handle_success(data, context) do
-        case __MODULE__.success(data, context) do
-          :ok ->
-            save(data, reset_context(context))
-
+        case apply(__MODULE__, :success, [data, context]) do
           {:ok, new_context} ->
             save(data, reset_context(new_context))
 
-          other ->
-            raise "`on_success/1` callback if returning invalid value: #{inspect(other)}. Only `:skip` or `:stop` (default) are supported."
+          :ok ->
+            save(data, reset_context(context))
         end
       end
 
@@ -109,16 +106,8 @@ defmodule DataFetcher do
       end
 
       defp handle_failure(err, context) do
-        case __MODULE__.error(err, context) do
-          :retry ->
-            {:stop, context, :retry}
-
-          :ignore ->
-            {:stop, context, :normal}
-
-          :stop ->
-            {:stop, context, :normal}
-        end
+        __MODULE__.error(err, context)
+        {:stop, context, :retry}
       end
 
       def handle_continue(:maybe_terminate_parent, context) do
@@ -163,7 +152,7 @@ defmodule DataFetcher do
       def success(_data, _context), do: :ok
 
       @impl unquote(__MODULE__)
-      def error(_error, _context), do: :stop
+      def error(_error, _context), do: :ok
 
       defoverridable success: 2, error: 2, interval: 1
 
@@ -171,10 +160,15 @@ defmodule DataFetcher do
     end
   end
 
-  @type context :: %{retries: non_neg_integer, pid: pid, parent: pid | nil}
+  @type context :: %{
+          optional(binary) => any,
+          retries: non_neg_integer,
+          pid: pid,
+          parent: pid | nil
+        }
 
   @callback interval(context) :: non_neg_integer
   @callback fetch(context) :: {:ok, term} | {:error, term}
-  @callback success(data :: term, context) :: :ok | {:ok, context} | {:error, term}
-  @callback error(error_term :: {:error, term}, context) :: :retry | :ignore
+  @callback success(data :: term, context) :: :ok | {:ok, context}
+  @callback error({:error, term}, context) :: any()
 end
