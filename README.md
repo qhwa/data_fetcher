@@ -48,4 +48,15 @@ defmodule MyApp.Application do
   use Application
 
   @impl true
-  def st
+  def start(_type, _args) do
+    children = [
+      MyDataFetcher # <- add your supervisor here
+    ]
+
+    opts = [strategy: :one_for_one, name: MatchService.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+end
+```
+
+There you go! Every 20 minutes you'll have fresh data pulled from your data source.
