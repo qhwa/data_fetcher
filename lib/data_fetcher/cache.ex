@@ -2,7 +2,7 @@ defmodule DataFetcher.Cache do
   use Task
 
   @default_storage DataFetcher.CacheStorage.Ets
-  @storage Application.compile_env(:data_fetcher, :storage, @default_storage)
+  @storage Application.compile_env(:data_fetcher, :cache_storage, @default_storage)
 
   def start_link(opts),
     do:
