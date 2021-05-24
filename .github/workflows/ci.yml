@@ -83,6 +83,7 @@ jobs:
         run: |
           mix deps.get
           mix deps.compile
+          mkdir -p priv/plts
 
           mix dialyzer --plt
   lint:
