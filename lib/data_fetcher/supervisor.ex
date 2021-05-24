@@ -3,6 +3,14 @@ defmodule DataFetcher.Supervisor do
 
   use Supervisor
 
+  def child_spec(opts),
+    do: %{
+      id: supervisor_name(opts[:name]),
+      start: {__MODULE__, :start_link, [opts]},
+      type: :supervisor,
+      restart: :permanent
+    }
+
   def start_link(opts) do
     name = opts[:name]
 
