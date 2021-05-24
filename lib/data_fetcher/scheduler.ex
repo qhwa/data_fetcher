@@ -1,7 +1,7 @@
 defmodule DataFetcher.Scheduler do
   use Task, restart: :permanent
 
-  @default_interval 2_000
+  @default_interval Application.compile_env(:data_fetcher, :default_interval, :timer.minutes(10))
 
   def start_link(opts) do
     Process.flag(:trap_exit, true)

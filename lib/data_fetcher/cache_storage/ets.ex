@@ -6,8 +6,7 @@ defmodule DataFetcher.CacheStorage.Ets do
     table = table_name(opts[:name])
 
     Task.start_link(fn ->
-      # for ets we need a process to keep the link
-      # to it
+      # for ets we need a process to keep the link to it
       :ets.new(table, [:set, :public, :named_table])
       :timer.sleep(:infinity)
     end)
@@ -23,12 +22,13 @@ defmodule DataFetcher.CacheStorage.Ets do
 
   @impl true
   def get(name) do
-    case :ets.lookup(table_name(name), :result) do
-      [{:result, result}] ->
-        {:ok, result}
+    table = table_name(name)
 
-      [] ->
-        nil
+    with tid when is_reference(tid) <- :ets.whereis(table),
+         [{:result, result}] <- :ets.lookup(table, :result) do
+      {:ok, result}
+    else
+      _ -> nil
     end
   end
 

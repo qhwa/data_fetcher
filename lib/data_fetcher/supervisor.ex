@@ -5,7 +5,9 @@ defmodule DataFetcher.Supervisor do
 
   def start_link(opts) do
     name = opts[:name]
+
     unless name, do: raise("`:name` option is required to start a data fetcher")
+    unless opts[:fetcher], do: raise("`:fetcher` needs to be defined")
 
     Supervisor.start_link(__MODULE__, opts, name: supervisor_name(name))
   end
