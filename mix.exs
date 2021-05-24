@@ -36,7 +36,8 @@ defmodule DataFetcher.MixProject do
     [
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.14", only: :test},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:benchee, "~> 1.0", only: :dev, runtime: false}
     ]
   end
 end
