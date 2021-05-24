@@ -7,8 +7,7 @@ DataFetcher is a library that can ease fetch-and-cache jobs for Elixir projects.
 ## Features
 
 * Periodic data fetching
-* Automatically retrying
-* Custom `success` and `error` callbacks
+* Automatically retrying on failures
 * High performance (backed by [ets](https://erlang.org/doc/man/ets.html))
 * Metrics (on the roadmap)
 
@@ -27,14 +26,10 @@ end
 
 ## Usage
 
-### 1. Define a fetcher
+### 1. Define a fetching worker
 
 ```elixir
-defmodule MyDataFetcher do
-
-  use DataFetcher, interval: :timer.minutes(20)
-
-  @impl true
+defmodule MyWorker do
   def fetch(_context) do
     fetch_my_data_from_remote_source()
   end
@@ -51,13 +46,28 @@ defmodule MyApp.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      MyDataFetcher # <- add your supervisor here
+      {
+        DataFetcher,
+        name: :my_fetcher,
+        fetcher: &MyWorker.fetch/1,
+        interval: :timer.minutes(20)
+      }, # <- add into your supervisor tree
+      ...
     ]
 
-    opts = [strategy: :one_for_one, name: MatchService.Supervisor]
+    opts = [strategy: :one_for_one, name: MySupervisor]
     Supervisor.start_link(children, opts)
   end
 end
 ```
 
 There you go! Every 20 minutes you'll have fresh data pulled from your data source.
+
+### 3. Get fetched result
+
+Whenever you need the result, you can call `DataFetcher.result/1`.
+
+```elixir
+DataFetcher.result(:my_fetcher)
+```
+
