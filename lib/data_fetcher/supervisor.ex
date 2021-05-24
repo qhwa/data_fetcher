@@ -20,12 +20,12 @@ defmodule DataFetcher.Supervisor do
 
     children = [
       {DataFetcher.Registry, name},
-      {DataFetcher.Cache, name},
+      {DataFetcher.Cache, opts},
+      {DataFetcher.Result, name},
       {DataFetcher.WorkerSupervisor, opts},
-      {DataFetcher.Scheduler, opts},
-      {DataFetcher.Result, name}
+      {DataFetcher.Scheduler, opts}
     ]
 
-    Supervisor.init(children, strategy: :rest_for_one)
+    Supervisor.init(children, strategy: :one_for_one)
   end
 end

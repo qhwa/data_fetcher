@@ -1,12 +1,18 @@
 defmodule DataFetcher.Cache do
-  use Task, restart: :permanent
+  use Task
 
-  def start_link(name),
-    do: Task.start_link(__MODULE__, :run, [name])
+  @default_storage DataFetcher.CacheStorage.Ets
+  @storage Application.compile_env(:data_fetcher, :storage, @default_storage)
 
-  def run(name) do
-    :ets.new(DataFetcher.ets_table_name(name), [:set, :public, :named_table])
+  def start_link(opts),
+    do:
+      Task.start_link(fn ->
+        @storage.init(opts)
+      end)
 
-    :timer.sleep(:infinity)
-  end
+  def put(name, result),
+    do: @storage.put(name, result)
+
+  def get(name),
+    do: @storage.get(name)
 end

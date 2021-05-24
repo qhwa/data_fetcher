@@ -30,9 +30,8 @@ end
 
 ```elixir
 defmodule MyWorker do
-  def fetch(_context) do
-    fetch_my_data_from_remote_source()
-  end
+  def fetch,
+    do: fetch_my_data_from_remote_source()
 end
 ```
 
@@ -70,4 +69,3 @@ Whenever you need the result, you can call `DataFetcher.result/1`.
 ```elixir
 DataFetcher.result(:my_fetcher)
 ```
-
