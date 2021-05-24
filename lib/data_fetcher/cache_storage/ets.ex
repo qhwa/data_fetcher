@@ -28,7 +28,7 @@ defmodule DataFetcher.CacheStorage.Ets do
   def get(name) do
     table = table_name(name)
 
-    with tid when is_reference(tid) <- :ets.whereis(table),
+    with tid when tid != :undefined <- :ets.whereis(table),
          [{:result, result}] <- :ets.lookup(table, :result) do
       {:ok, result}
     else

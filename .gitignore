@@ -25,3 +25,5 @@ data_fetcher-*.tar
 
 # Temporary files for e.g. tests
 /tmp
+
+/priv/plts
