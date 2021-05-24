@@ -20,7 +20,7 @@ defmodule DataFetcher.Result do
   end
 
   def get(name) do
-    case get_result_from_ets(name) do
+    case get_result_from_cache(name) do
       {:ok, result} ->
         result
 
@@ -29,15 +29,8 @@ defmodule DataFetcher.Result do
     end
   end
 
-  defp get_result_from_ets(name) do
-    case :ets.lookup(DataFetcher.ets_table_name(name), name) do
-      [{^name, result}] ->
-        {:ok, result}
-
-      [] ->
-        nil
-    end
-  end
+  defp get_result_from_cache(name),
+    do: DataFetcher.Cache.get(name)
 
   def fetched(name, result) do
     Logger.debug(["Fetcher ", inspect(name), " finishes, result: ", inspect(result)])
