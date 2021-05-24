@@ -34,9 +34,9 @@ defmodule DataFetcher.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:dialyxir, "~> 1.1", only: :dev, runtime: false},
+      {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.14", only: :test},
-      {:credo, "~> 1.5", only: :dev, runtime: false}
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
 end
