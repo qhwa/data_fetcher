@@ -1,4 +1,6 @@
 defmodule DataFetcher.Scheduler do
+  @moduledoc false
+
   use Task, restart: :permanent
 
   @default_interval Application.compile_env(:data_fetcher, :default_interval, :timer.minutes(10))

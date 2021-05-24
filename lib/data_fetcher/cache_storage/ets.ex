@@ -1,4 +1,8 @@
 defmodule DataFetcher.CacheStorage.Ets do
+  @moduledoc """
+  Ets storage adapter
+  """
+
   @behaviour DataFetcher.CacheStorage
 
   @impl true
