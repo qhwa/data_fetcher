@@ -1,4 +1,6 @@
 defmodule DataFetcher.WorkerSupervisor do
+  @moduledoc false
+
   use DynamicSupervisor
 
   def start_link(opts),

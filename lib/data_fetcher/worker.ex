@@ -1,4 +1,6 @@
 defmodule DataFetcher.Worker do
+  @moduledoc false
+
   use Task
 
   def start_link(opts) do

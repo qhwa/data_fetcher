@@ -1,4 +1,6 @@
 defmodule DataFetcher.Cache do
+  @moduledoc false
+
   use Agent
 
   @default_storage Application.compile_env(

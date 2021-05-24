@@ -1,4 +1,6 @@
 defmodule DataFetcher.Result do
+  @moduledoc false
+
   use GenServer
   require Logger
 

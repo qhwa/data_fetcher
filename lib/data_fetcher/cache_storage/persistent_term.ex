@@ -1,4 +1,8 @@
 defmodule DataFetcher.CacheStorage.PersistentTerm do
+  @moduledoc """
+  persitent_term storage adapter
+  """
+
   @behaviour DataFetcher.CacheStorage
 
   @impl true
