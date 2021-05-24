@@ -6,8 +6,6 @@ defmodule DataFetcher.Scheduler do
   @default_interval Application.compile_env(:data_fetcher, :default_interval, :timer.minutes(10))
 
   def start_link(opts) do
-    Process.flag(:trap_exit, true)
-
     interval = Keyword.get(opts, :interval, @default_interval)
 
     Task.start_link(fn ->
@@ -29,7 +27,7 @@ defmodule DataFetcher.Scheduler do
   defp worker_spec(iteration, opts) do
     %{
       id: iteration,
-      start: {DataFetcher.Worker, :start_link, [opts]},
+      start: {DataFetcher.Worker, :start_link, [Keyword.put(opts, :iteration, iteration)]},
       restart: :transient
     }
   end
