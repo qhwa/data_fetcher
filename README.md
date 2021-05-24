@@ -25,21 +25,7 @@ end
 
 ## Usage
 
-### 1. Define a fetching worker
-
-```elixir
-defmodule MyWorker do
-  def fetch,
-    do: fetch_my_data_from_remote_source()
-
-  defp fetch_my_data_from_remote_source do
-    # if successful:
-    {:ok, %{foo: "bar"}}
-  end
-end
-```
-
-### 2. Add in the supervisor tree
+### 3. Add in the supervisor tree
 
 ```elixir
 # lib/my_app/application.ex
@@ -67,6 +53,18 @@ defmodule MyApp.Application do
 end
 ```
 
+### 2. Define a fetching worker
+
+```elixir
+defmodule MyWorker do
+  def fetch do
+    # maybe do some networking
+    # if successful:
+    {:ok, %{foo: "bar"}}
+  end
+end
+```
+
 There you go! Every 20 minutes you'll have fresh data pulled from your data source.
 
 ### 3. Get fetched result
@@ -88,6 +86,43 @@ config :data_fetcher, :cache_storage, DataFetcher.CacheStorage.Ets
 
 # or with persistent_term
 config :data_fetcher, :cache_storage, DataFetcher.CacheStorage.PersistentTerm
+```
+
+The difference could be tiny when the data size is small but significant for bigger data. Here's the performance test result on my laptop:
+
+```sh
+Operating System: Linux
+CPU Information: Intel(R) Core(TM) i7-10710U CPU @ 1.10GHz
+Number of Available Cores: 12
+Available memory: 15.31 GB
+Elixir 1.12.0
+Erlang 24.0
+
+Benchmark suite executing with the following configuration:
+warmup: 2 s
+time: 5 s
+memory time: 0 ns
+parallel: 1
+inputs: none specified
+Estimated total run time: 28 s
+
+Benchmarking huge_list_ets...
+
+Benchmarking huge_list_pt...
+Benchmarking small_atom_ets...
+Benchmarking small_atom_pt...
+
+Name                     ips        average  deviation         median         99th %
+huge_list_pt        203.42 K        4.92 μs   ±391.72%        4.14 μs       10.16 μs
+small_atom_pt       175.81 K        5.69 μs   ±332.92%        4.15 μs       22.42 μs
+small_atom_ets       76.47 K       13.08 μs   ±170.09%       14.87 μs       43.94 μs
+huge_list_ets        0.125 K     8030.95 μs    ±46.61%     5724.22 μs    19444.12 μs
+
+Comparison: 
+huge_list_pt        203.42 K
+small_atom_pt       175.81 K - 1.16x slower +0.77 μs
+small_atom_ets       76.47 K - 2.66x slower +8.16 μs
+huge_list_ets        0.125 K - 1633.66x slower +8026.03 μs
 ```
 
 [ETS]: https://erlang.org/doc/man/ets.html
