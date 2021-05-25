@@ -5,8 +5,6 @@
 
 DataFetcher is a library that can ease fetch-and-cache jobs for Elixir projects.
 
-**Caution:** It's currently under development and not published yet.
-
 ## Features
 
 * Periodic data fetching
@@ -23,7 +21,7 @@ by adding `data_fetcher` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:data_fetcher, github: "qhwa/data_fetcher"}
+    {:data_fetcher, "~> 0.1.0"}
   ]
 end
 ```
