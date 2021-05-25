@@ -16,7 +16,10 @@ defmodule DataFetcherTest do
     test "it waits for fetching to complete" do
       start_fetcher(
         name: :foo,
-        fetcher: fn -> {:ok, BAR} end
+        fetcher: fn ->
+          :timer.sleep(50)
+          {:ok, BAR}
+        end
       )
 
       assert DataFetcher.result(:foo) == BAR

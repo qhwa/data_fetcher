@@ -1,7 +1,7 @@
 # DataFetcher 
 
 ![CI status](https://github.com/qhwa/data_fetcher/workflows/CI/badge.svg)
-![coverage](https://coveralls.io/repos/github/qhwa/data_fetcher/badge.svg?branch=master)
+[![coverage](https://coveralls.io/repos/github/qhwa/data_fetcher/badge.svg?branch=master)](https://coveralls.io/github/qhwa/data_fetcher)
 
 DataFetcher is a library that can ease fetch-and-cache jobs for Elixir projects.
 
