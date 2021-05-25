@@ -73,11 +73,11 @@ defmodule DataFetcherTest do
 
     test "it works with single module" do
       start_fetcher(
-        name: :mfa_fetcher,
+        name: :m_fetcher,
         fetcher: MyFetcher
       )
 
-      assert DataFetcher.result(:mfa_fetcher) == "Hello!"
+      assert DataFetcher.result(:m_fetcher) == "Hello!"
     end
   end
 
