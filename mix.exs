@@ -4,6 +4,8 @@ defmodule DataFetcher.MixProject do
   def project do
     [
       app: :data_fetcher,
+      description:
+        "DataFetcher is a library that can ease fetch-and-cache jobs for Elixir projects.",
       version: "0.1.0",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
@@ -20,7 +22,10 @@ defmodule DataFetcher.MixProject do
         plt_local_path: "priv/plts",
         plt_file: "priv/plts/dialyzer.plt",
         plt_add_apps: [:ex_unit]
-      ]
+      ],
+      docs: docs(),
+      package: package(),
+      source_url: "https://github.com/qhwa/data_fetcher"
     ]
   end
 
@@ -34,10 +39,28 @@ defmodule DataFetcher.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_doc, "~> 0.21", only: [:dev, :doc], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.14", only: :test},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:benchee, "~> 1.0", only: :dev, runtime: false}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "DataFetcher"
+    ]
+  end
+
+  defp package do
+    [
+      name: "data_fetcher",
+      files: ~w[lib mix.exs],
+      licenses: ["MIT"],
+      links: %{
+        "github" => "https://github.com/qhwa/data_fetcher"
+      }
     ]
   end
 end
