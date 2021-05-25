@@ -1,4 +1,7 @@
-# DataFetcher
+# DataFetcher 
+
+![CI status](https://github.com/github/qhwa/data_fetcher/workflows/ci.yml/badge.svg)
+![coverage](https://coveralls.io/repos/github/qhwa/data_fetcher/badge.svg?branch=master)
 
 DataFetcher is a library that can ease fetch-and-cache jobs for Elixir projects.
 
@@ -88,7 +91,7 @@ config :data_fetcher, :cache_storage, DataFetcher.CacheStorage.Ets
 config :data_fetcher, :cache_storage, DataFetcher.CacheStorage.PersistentTerm
 ```
 
-The difference could be tiny when the data size is small but significant for bigger data. Here's the performance test result on my laptop:
+The difference could be tiny when the data size is small but huge for bigger data. Here's the performance test result on my laptop:
 
 ```sh
 Operating System: Linux
@@ -107,23 +110,24 @@ inputs: none specified
 Estimated total run time: 28 s
 
 Benchmarking huge_list_ets...
-
 Benchmarking huge_list_pt...
 Benchmarking small_atom_ets...
 Benchmarking small_atom_pt...
 
 Name                     ips        average  deviation         median         99th %
-huge_list_pt        203.42 K        4.92 μs   ±391.72%        4.14 μs       10.16 μs
-small_atom_pt       175.81 K        5.69 μs   ±332.92%        4.15 μs       22.42 μs
-small_atom_ets       76.47 K       13.08 μs   ±170.09%       14.87 μs       43.94 μs
-huge_list_ets        0.125 K     8030.95 μs    ±46.61%     5724.22 μs    19444.12 μs
+huge_list_pt        275.56 K        3.63 μs  ±1279.66%        2.63 μs        5.50 μs
+small_atom_pt       271.58 K        3.68 μs  ±1168.24%        2.63 μs        6.18 μs
+small_atom_ets      239.30 K        4.18 μs  ±1033.83%        3.10 μs        5.90 μs
+huge_list_ets       0.0668 K    14963.26 μs    ±37.72%    11187.58 μs    28818.89 μs
 
 Comparison: 
-huge_list_pt        203.42 K
-small_atom_pt       175.81 K - 1.16x slower +0.77 μs
-small_atom_ets       76.47 K - 2.66x slower +8.16 μs
-huge_list_ets        0.125 K - 1633.66x slower +8026.03 μs
+huge_list_pt        275.56 K
+small_atom_pt       271.58 K - 1.01x slower +0.0532 μs
+small_atom_ets      239.30 K - 1.15x slower +0.55 μs
+huge_list_ets       0.0668 K - 4123.22x slower +14959.63 μs
 ```
+
+In conclusion, using [ETS][] is good enough unless your data rarely or never changes and is very large.
 
 [ETS]: https://erlang.org/doc/man/ets.html
 [persistent_term]: https://erlang.org/doc/man/persistent_term.html

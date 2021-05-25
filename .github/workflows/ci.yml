@@ -204,5 +204,8 @@ jobs:
 
       - name: Fetch dependencies
         run: mix deps.get
-      - name: ==> 🔎 Integrating test
-        run: mix test --max-failures 1 --exclude pending
+
+      - name: ==> 🔎 Testing
+        run: mix coveralls.github --max-failures 1 --exclude pending
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
