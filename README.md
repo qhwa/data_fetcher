@@ -28,7 +28,7 @@ end
 
 ## Usage
 
-### 3. Add in the supervisor tree
+### 1. Add in the supervisor tree
 
 ```elixir
 # lib/my_app/application.ex
