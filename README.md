@@ -12,6 +12,8 @@ DataFetcher is a library that can ease fetch-and-cache jobs for Elixir projects.
 * Periodic data fetching
 * Automatically retrying on failures
 * High performance (backed by [ETS][] and [persistent_term][])
+* Consistent api for getting the result, even during the first fetching 
+* No blocking your application from booting up
 
 ## Installation
 
