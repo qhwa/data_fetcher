@@ -5,6 +5,8 @@
 
 DataFetcher is a library that can ease fetch-and-cache jobs for Elixir projects.
 
+[online document](https://hexdocs.pm/data_fetcher/DataFetcher.html)
+
 ## Features
 
 * Periodic data fetching
@@ -38,7 +40,7 @@ defmodule MyApp.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      my_fetcher_spec(),
+      {DataFetcher, my_fetcher_spec()},
       ...
     ]
 
@@ -47,12 +49,11 @@ defmodule MyApp.Application do
   end
 
   defp my_fetcher_spec,
-    do: {
-        DataFetcher,
-        name: :my_fetcher,
-        fetcher: &MyWorker.fetch/1,
-        interval: :timer.minutes(20)
-      }
+    do: [
+      name: :my_fetcher,
+      fetcher: &MyWorker.fetch/1,
+      interval: :timer.minutes(20)
+    ]
 end
 ```
 
