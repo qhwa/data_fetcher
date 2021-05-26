@@ -20,8 +20,19 @@ defmodule DataFetcher.Cache do
   end
 
   defp define_storage_module(name, storage) do
-    module_definition(name, storage)
-    |> Code.eval_quoted()
+    prev_option_value = Code.get_compiler_option(:ignore_module_conflict)
+
+    emit_warning = fn ->
+      Code.put_compiler_option(:ignore_module_conflict, true)
+    end
+
+    reset = fn ->
+      Code.put_compiler_option(:ignore_module_conflict, prev_option_value)
+    end
+
+    emit_warning.()
+    module_definition(name, storage) |> Code.compile_quoted()
+    reset.()
   end
 
   defp module_definition(name, storage) do

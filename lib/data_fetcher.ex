@@ -96,13 +96,15 @@ defmodule DataFetcher do
 
   ```elixir
   iex> opts = [
-  ...>   name: :function_fetcher,
+  ...>   name: :my_fetcher,
   ...>   fetcher: fn -> {:ok, %{foo: 1}} end
   ...> ]
   ...>
-  ...> {:ok, _} = Supervisor.start_link([{DataFetcher, opts}], strategy: :one_for_one)
+  ...> {:ok, _} = Supervisor.start_link([
+  ...>     {DataFetcher, opts}
+  ...>   ], strategy: :one_for_one)
   ...>
-  ...> DataFetcher.result(:function_fetcher)
+  ...> DataFetcher.result(:my_fetcher)
   %{foo: 1}
   ```
   """
